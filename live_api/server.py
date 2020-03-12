@@ -9,10 +9,18 @@ data = {
 }
 
 class Data(Resource):
+    def delete(self, resource):
+        try:
+            del data[resource]
+        except KeyError:
+            pass
     def post(self, resource):
         json_data = request.get_json(force=True)
-        data[resource] = json_data['data']
-        print(data)
+        print(json_data)
+        if resource in data:
+            data[resource] = data[resource] + json_data['data']
+        else:
+            data[resource] = json_data['data']
         return 200
     def get(self, resource):
         return data[resource], 200
